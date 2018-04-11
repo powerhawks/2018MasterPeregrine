@@ -21,4 +21,9 @@ public class TurnCommand implements Command {
 	public boolean isComplete() {
 		return complete;
 	}
+
+	@Override
+	public void stop() {
+		driveTrain.stop();
+	}
 }
