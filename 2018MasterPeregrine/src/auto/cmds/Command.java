@@ -1,12 +1,22 @@
 package auto.cmds;
 
+/**
+ * Generic interface for autonomous commands
+ * @author Power Hawks Controls
+ *
+ */
 public interface Command {
+	/**
+	 * The desired target of a specific command i.e. angle for a TurnCommand
+	 */
 	public double target = 0;
+	/**
+	 * Flag if the command is complete
+	 */
 	public boolean complete = false;
 	
 	/**
 	 * Execution method for the command
-	 * @return if the command is still running or has finished
 	 */
 	public void execute();
 	

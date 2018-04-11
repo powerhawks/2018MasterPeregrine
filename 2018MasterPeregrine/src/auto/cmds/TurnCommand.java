@@ -2,11 +2,21 @@ package auto.cmds;
 
 import subsys.DriveTrain;
 
+/**
+ * Command that turns the robot to a certain radial using the on-board NavX
+ * @author Power Hawks Controls
+ *
+ */
 public class TurnCommand implements Command {
 	DriveTrain driveTrain;
 	double target;
 	boolean complete = false;
 	
+	/**
+	 * Turns the robot to a certain radial
+	 * @param dt the drive train subsystem
+	 * @param t desired radial
+	 */
 	public TurnCommand(DriveTrain dt, double t) {
 		driveTrain = dt;
 		target = t;
@@ -14,7 +24,7 @@ public class TurnCommand implements Command {
 
 	public void execute() {
 		driveTrain.turnTo(target);
-		complete = !driveTrain.turning;
+		complete = !driveTrain.isTurning();
 	}
 
 	@Override

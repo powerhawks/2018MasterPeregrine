@@ -2,8 +2,10 @@ package vars;
 
 /**
  * Dimensions for the field setup and deadreckoning travel positions.
- * ALL DIMENSIONS ARE IN INCHES
+ * <br> Note: ALL DIMENSIONS ARE IN INCHES </br>
+ * @author Power Hawks Controls
  */
+@SuppressWarnings("javadoc")
 public class Dimensions {
 	/**
 	 * Starting distance
@@ -20,9 +22,6 @@ public class Dimensions {
 	 */
 	public static final double BL_DIST = 80;
 	
-	/**
-	 * Length of the robot
-	 */
 	public static final double LENGTH_OF_ROBOT = 38.5;
 	public static final double WIDTH_OF_ROBOT = 32.5;
 	

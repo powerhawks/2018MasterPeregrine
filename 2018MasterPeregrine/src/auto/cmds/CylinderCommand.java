@@ -2,12 +2,22 @@ package auto.cmds;
 
 import subsys.Shooter;
 
-public class PistonCommand implements Command {
+/**
+ * Command that raises/lowers the shooter of the robot
+ * @author Power Hawks Controls
+ *
+ */
+public class CylinderCommand implements Command {
 	Shooter shooter;
 	boolean low;
 	boolean complete = false;
 	
-	public PistonCommand(Shooter s, boolean l) {
+	/**
+	 * Raises or lowers the shooter
+	 * @param s the shooter of the robot
+	 * @param l if the shooter will be lowered
+	 */
+	public CylinderCommand(Shooter s, boolean l) {
 		shooter = s;
 		low = l;
 	}

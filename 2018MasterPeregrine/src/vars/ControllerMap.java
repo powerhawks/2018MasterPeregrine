@@ -1,11 +1,11 @@
 package vars;
 
 /**
- * Controller mapping based on Cole/Xander's preferences
- * 
- * @author Braidan
+ * Controller mapping based on primary drive team preferences preferences
+ * @author Power Hawks Controls
  *
  */
+@SuppressWarnings("javadoc")
 public class ControllerMap {
 	/* driver controls */
 	public static final int DRIVER_PORT = 0;

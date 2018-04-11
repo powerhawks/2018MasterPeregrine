@@ -9,22 +9,37 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import vars.Motors;
 import vars.Pneumatics;
 
+/**
+ * The shooter subsystem for the robot
+ * @author Power Hawks Controls
+ *
+ */
 public class Shooter {
 	// Velocity variables
+	@SuppressWarnings("javadoc")
 	public final int OMEGA_VELOCITY = 150000;
+	@SuppressWarnings("javadoc")
 	public final double OMEGA_POWER = 1;
+	@SuppressWarnings("javadoc")
 	public final int LOW_SCALE_VELOCITY = 24000;
+	@SuppressWarnings("javadoc")
 	public final int HIGH_SCALE_VELOCITY = 26600;
+	@SuppressWarnings("javadoc")
 	public final double SCALE_POWER = .6;
+	@SuppressWarnings("javadoc")
 	public final int SWITCH_VELOCITY = 7500;
+	@SuppressWarnings("javadoc")
 	public final double SWITCH_POWER = .3;
+	@SuppressWarnings("javadoc")
 	public final double INTAKE_POWER = .75;
+	@SuppressWarnings("javadoc")
 	public final double OUTTAKE_POWER = -.75;
+	@SuppressWarnings("javadoc")
 	public final double ARM_SPEED = .3;
 
 	// Flags
-	public boolean spunUp = false;
-	public boolean shooting = false;
+	boolean spunUp = false;
+	boolean shooting = false;
 
 	// Sensors
 	DigitalInput boxSensor = new DigitalInput(0);
@@ -41,8 +56,8 @@ public class Shooter {
 
 		if (spunUp && autoFire) { // If motors are spun up, push box into shooter
 			setIntakes(1);
-			Timer.delay(.5);
 			shooting = true;
+			Timer.delay(.5);
 		}
 	}
 
@@ -50,41 +65,29 @@ public class Shooter {
 		double curSpeedLeft = Motors.shooterEncoderLeft.getSelectedSensorVelocity(0);
 		double curSpeedRight = -Motors.shooterEncoderRight.getSelectedSensorVelocity(0);
 		double curAvgSpeed = (curSpeedLeft + curSpeedRight) / 2;
-		SmartDashboard.putNumber("Shooter Speed Left:", curSpeedLeft); //Debug
-		SmartDashboard.putNumber("Shooter Speed Right:", curSpeedRight); //Debug
-		SmartDashboard.putNumber("Average Shooter Speed:", curAvgSpeed); //Debug
-		
-//		if (target > 1) {
-//			pid.setSetpoint(target);
-//			double speed = pid.getOutput(curSpeed);
-//			setShooters(speed);
-//		}
+		double deadzone = 2000;
+
 		setShooters(power);
 
-		if ((curAvgSpeed > target && curAvgSpeed < target+2000)) {
+		if ((curAvgSpeed > target && curAvgSpeed < target+deadzone)) {
 			spunUp = true;
 		} 
-		else if(curAvgSpeed > target + 2000) {
+		else if(curAvgSpeed > target+deadzone) {
 			setShooters(0);
 		}
 		else {
 			spunUp = false;
 		}
-		
-		//Future adjust for fixing overspeed on right
-		//check
-//		int leftTarget = power * 1.2;
-//		int rightTarget = power * .8;
-//		if((curSpeedLeft > leftTarget && curSpeedLeft < leftTarget + 2000) && (curSpeedRight > rightTarget && curSpeedRight < rightTarget + 2000)){
-	//		spunUp = true;
-	//	}
-
-//		SmartDashboard.putNumber("Motor Speed:", curSpeed); //Debug
 		SmartDashboard.putBoolean("Motors Spun Up:", spunUp); //NOT A DEBUG
 	}
 
 	// =====PNEUMATIC METHODS=====
-
+	
+	
+	/**
+	 * Raises/lowers the shooter
+	 * @param low if the shooter should be in the LOW position
+	 */
 	public void changeAngle(boolean low) {
 		if (low) { // LOWERS piston to 30 degrees
 			Pneumatics.shooterPiston.set(Value.kForward);
@@ -96,34 +99,35 @@ public class Shooter {
 
 	// =====UTILITY METHODS=====
 	
-//	/**
-//	 * NORMAL!
-//	 */
-	public void setShooters(double speed) {
-		Motors.shooterFrontLeft.set(ControlMode.PercentOutput, speed);
-		Motors.shooterFrontRight.set(ControlMode.PercentOutput, -speed);
-		Motors.shooterBackLeft.set(ControlMode.PercentOutput, speed);
-		Motors.shooterBackRight.set(ControlMode.PercentOutput, -speed);		
+	/**
+	 * Sets the shooter motors to the specified power
+	 * @param power the power of the motors 
+	 */
+	public void setShooters(double power) {
+		Motors.shooterFrontLeft.set(ControlMode.PercentOutput, power);
+		Motors.shooterFrontRight.set(ControlMode.PercentOutput, -power);
+		Motors.shooterBackLeft.set(ControlMode.PercentOutput, power);
+		Motors.shooterBackRight.set(ControlMode.PercentOutput, -power);		
+	}
+
+	/**
+	 * Sets the intake motors to the specified power
+	 * @param power the power of the motors
+	 */
+	public void setIntakes(double power) {
+		Motors.intakeInboardLeft.set(ControlMode.PercentOutput, power);
+		Motors.intakeInboardRight.set(ControlMode.PercentOutput, -power);
+		Motors.intakeOutboardLeft.set(ControlMode.PercentOutput, -power);
+		Motors.intakeOutboardRight.set(ControlMode.PercentOutput, power);
 	}
 	
 	/**
-	 * EXPERIMENTAL!
-	 * @param speed
+	 * Allows for each side of the intake to be individually controlled using the joysticks
+	 * <br>Note: this didn't work so well so only use this for reference</br>
+	 * @param left the power of the left motors
+	 * @param right the power of the right motors
 	 */
-//	public void setShooters(double speed) {
-//		Motors.shooterFrontLeft.set(ControlMode.PercentOutput, speed);
-//		Motors.shooterFrontRight.set(ControlMode.PercentOutput, -(speed - (speed * .25)));
-//		Motors.shooterBackLeft.set(ControlMode.PercentOutput, speed);
-//		Motors.shooterBackRight.set(ControlMode.PercentOutput, -(speed - (speed * .25)));		
-//	}
-
-	public void setIntakes(double speed) {
-		Motors.intakeInboardLeft.set(ControlMode.PercentOutput, speed);
-		Motors.intakeInboardRight.set(ControlMode.PercentOutput, -speed);
-		Motors.intakeOutboardLeft.set(ControlMode.PercentOutput, -speed);
-		Motors.intakeOutboardRight.set(ControlMode.PercentOutput, speed);
-	}
-	
+	@Deprecated
 	public void setIntakes(double left, double right) {
 		Motors.intakeInboardLeft.set(ControlMode.PercentOutput, right);
 		Motors.intakeInboardRight.set(ControlMode.PercentOutput, -left);
@@ -131,11 +135,19 @@ public class Shooter {
 		Motors.intakeOutboardRight.set(ControlMode.PercentOutput, right);
 	}
 	
-	public void moveIntake(double speed) {
-		Motors.armLeft.set(ControlMode.PercentOutput, speed);
-		Motors.armRight.set(ControlMode.PercentOutput, -speed);
+	/**
+	 * Moves the intake arms as if it were a toggle (arms could either be in the forward or backward state; there is no fine control)
+	 * <br>Note: the arm motors are always on and they overheat after approximately 5-7 minutes</br>
+	 * @param power the power of the intake arm motors
+	 */
+	public void moveIntakeArms(double power) {
+		Motors.armLeft.set(ControlMode.PercentOutput, power);
+		Motors.armRight.set(ControlMode.PercentOutput, -power);
 	}
 	
+	/**
+	 * Wrapper for stopping the shooter and intake motors
+	 */
 	public void stop() {
 		setShooters(0);
 		setIntakes(0);
@@ -143,8 +155,29 @@ public class Shooter {
 	
 
 	// =====GETTER METHODS=====
-
+	
+	
+	/**
+	 * Gets if the box position sensor has been tripped
+	 * @return if the box is in position
+	 */
 	public boolean getBoxPos() {
 		return boxSensor.get();
+	}
+	
+	/**
+	 * Gets if the shooter is spun up to the target velocity
+	 * @return if the shooter is spun up
+	 */
+	public boolean isSpunUp() {
+		return spunUp;
+	}
+	
+	/**
+	 * Gets if the shooter is currently shooting
+	 * @return if the shooter is shooting
+	 */
+	public boolean isShooting() {
+		return shooting;
 	}
 }

@@ -3,13 +3,12 @@ package vars;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 /**
- * General class for the motors of Peregrine. Motors that need to be reversed:
- * 1) driveBackLeft 2) driveBackRight 3) shooterFrontRight 4) shooterBackRight
- * 5) intakeRight
- * 
- * @author Braidan
+ * General class for the motors of the robot. Motors that need to be reversed:
+ * 1) driveBackLeft 2) driveBackRight 3) shooterFrontRight 4) shooterBackRight 5) intakeRight
+ * @author Power Hawks Controls
  *
  */
+@SuppressWarnings("javadoc")
 public class Motors {
 	// DRIVE TRAIN motors
 	public static TalonSRX driveFrontLeft = new TalonSRX(46);

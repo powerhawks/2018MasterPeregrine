@@ -7,7 +7,7 @@ package util;
 *   output= pid.getOutput(sensorvalue,target); <br>
 * }
 * 
-* @see http://brettbeauregard.com/blog/2011/04/improving-the-beginners-pid-direction/improving-the-beginners-pid-introduction
+* @see "http://brettbeauregard.com/blog/2011/04/improving-the-beginners-pid-direction/improving-the-beginners-pid-introduction"
 */
 public class MiniPID{
 	//**********************************
@@ -180,7 +180,7 @@ public class MiniPID{
 	/**
 	 * Set the maximum output value contributed by the I component of the system
 	 * This can be used to prevent large windup issues and make tuning simpler
-	 * @param maximum. Units are the same as the expected output value
+	 * @param maximum Units are the same as the expected output value
 	 */
 	public void setMaxIOutput(double maximum){
 		// Internally maxError and Izone are similar, but scaled for different purposes. 
@@ -382,7 +382,7 @@ public class MiniPID{
      * Can be very useful for fast-reacting control loops, such as ones 
      * with large P or D values and feed-forward systems.
      * 
-	 * @param rate, with units being the same as the output
+	 * @param rate with units being the same as the output
 	 */
 	public void setOutputRampRate(double rate){
 		outputRampRate=rate;
@@ -393,7 +393,7 @@ public class MiniPID{
 	 * <br>Can simplify tuning by helping tuning over a small range applies to a much larger range. 
 	 * <br>This limits the reactivity of P term, and restricts impact of large D term
 	 * during large setpoint adjustments. Increases lag and I term if range is too small.
-	 * @param range, with units being the same as the expected sensor range. 
+	 * @param range with units being the same as the expected sensor range. 
 	 */
 	public void setSetpointRange(double range){
 		setpointRange=range;
