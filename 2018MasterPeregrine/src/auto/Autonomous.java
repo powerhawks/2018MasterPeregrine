@@ -12,7 +12,6 @@ import auto.cmds.ShootCommand;
 import auto.cmds.TurnCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import subsys.DriveTrain;
-import subsys.LEDs;
 import subsys.Shooter;
 import subsys.sensors.Ultrasonic;
 import vars.Dimensions;
@@ -27,11 +26,10 @@ public class Autonomous {
 	// Commands Instantiation
 	public ArrayList<Command> commands = new ArrayList<Command>();
 	int i = 0;
+	public Scheduler scheduler = new Scheduler();
 	
 	// Flags
-	boolean running = false;
 	boolean panic = false;
-	boolean done = false;
 	
 	// Subsystem Instantiation
 	DriveTrain driveTrain;
@@ -54,37 +52,6 @@ public class Autonomous {
 	public Autonomous(DriveTrain dt, Shooter s) {
 		driveTrain = dt;
 		shooter = s;
-	}
-	
-	
-	// =====AUTO RUN METHOD=====
-	
-	
-	/**
-	 * Runs the commands that are generated from generatePath().
-	 */
-	public void run() {
-		if (!done) {
-			commands.get(i).execute();
-		}
-		
-		if (!commands.get(i).isComplete()) {
-			running = true;
-		} 
-		else {
-			if (i < commands.size()-1) {
-				i++;
-			}
-			else {
-				driveTrain.stop();
-				shooter.stop();
-				done = true;
-			}
-			running = false;
-		}
-		
-		LEDs.auto.set(true);
-		SmartDashboard.putBoolean("Running:", running);
 	}
 	
 	
@@ -185,6 +152,7 @@ public class Autonomous {
 		
 		panic = true;
 		SmartDashboard.putBoolean("PANIC:", panic);
+		scheduler.addCommands(commands);
 	}
 	
 	public void generatePath(String sp, String ad) {
@@ -275,8 +243,9 @@ public class Autonomous {
 				panic = true;
 			}
 		}
-		
+	
 		SmartDashboard.putBoolean("PANIC:", panic);
+		scheduler.addCommands(commands);
 	}
 	
 	
@@ -288,9 +257,7 @@ public class Autonomous {
 	}
 	
 	public void reset() {
-		running = false;
 		panic = false;
-		done = false;
 		shooter.shooting = false;
 		i = 0;
 		commands.clear();

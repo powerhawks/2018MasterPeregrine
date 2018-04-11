@@ -11,6 +11,11 @@ public interface Command {
 	public void execute();
 	
 	/**
+	 * Stops the subsystem
+	 */
+	public void stop();
+	
+	/**
 	 * Returns if the command is complete or not
 	 */
 	public boolean isComplete();

@@ -23,5 +23,10 @@ public class ShootCommand implements Command {
 	@Override
 	public boolean isComplete() {
 		return complete;
+	}
+
+	@Override
+	public void stop() {
+		shooter.stop();
 	}	
 }

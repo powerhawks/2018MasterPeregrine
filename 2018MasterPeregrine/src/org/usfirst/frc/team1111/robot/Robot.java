@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import auto.Autonomous;
+import auto.Scheduler;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -110,7 +111,7 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void autonomousPeriodic() {
-		auto.run();
+		auto.scheduler.run();
 	}
 
 	@Override

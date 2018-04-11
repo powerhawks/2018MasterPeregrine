@@ -22,5 +22,9 @@ public class PistonCommand implements Command {
 	public boolean isComplete() {
 		return complete;
 	}
-	
+
+	@Override
+	public void stop() {
+		
+	}
 }
