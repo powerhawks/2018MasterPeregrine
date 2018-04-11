@@ -3,6 +3,7 @@ package auto.cmds;
 import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj.Timer;
+import power.hawks.frc.lib.Command;
 
 /**
  * Class that allows multiple commands to be executed in parallel

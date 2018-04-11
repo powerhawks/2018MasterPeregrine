@@ -1,5 +1,6 @@
 package auto.cmds;
 
+import power.hawks.frc.lib.Command;
 import subsys.DriveTrain;
 
 /**

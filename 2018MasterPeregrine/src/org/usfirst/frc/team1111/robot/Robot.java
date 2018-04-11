@@ -21,6 +21,7 @@ import vars.Pneumatics;
  * @author Power Hawks Controls
  *
  */
+@SuppressWarnings("javadoc")
 public class Robot extends IterativeRobot {
 	// Subsystem Instantiation
 	DriveTrain driveTrain = new DriveTrain();
@@ -35,23 +36,16 @@ public class Robot extends IterativeRobot {
 		
 	// Auto Chooser Instantiation
 	SendableChooser<String> autoChooser = new SendableChooser<>();
-	@SuppressWarnings("javadoc")
 	public final static String BASELINE = "BSE";
-	@SuppressWarnings("javadoc")
 	public final static String SWITCH = "SWT";
-	@SuppressWarnings("javadoc")
 	public final static String SCALE = "SCA";
-	@SuppressWarnings("javadoc")
 	public final static String PANIC = "P";
 	String autoSelected;
 	
 	// Starting Position Chooser Instantiation
 	SendableChooser<String> startChooser = new SendableChooser<>();
-	@SuppressWarnings("javadoc")
 	public final static String POSITION_A = "PA";
-	@SuppressWarnings("javadoc")
 	public final static String POSITION_B = "PB";
-	@SuppressWarnings("javadoc")
 	public final static String POSITION_C = "PC";
 	String startSelected;
 
