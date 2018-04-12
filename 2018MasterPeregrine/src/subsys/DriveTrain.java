@@ -20,14 +20,18 @@ import vars.Pneumatics;
  */
 public class DriveTrain {
 	// NavX PID Variables
-	final double pN = 0.05, iN = 0.0, dN = 0.0; // TODO: Calibrate
+	final double pN = 0.05, iN = 0.0, dN = 0.0;
 	AHRS navx = new AHRS(SPI.Port.kMXP);
 	MiniPID pidNavx = new MiniPID(pN, iN, dN);
 
 	// Encoder PID Variables
-	double pT = .055, iT = 0, dT = 0; // TODO: Calibrate
+	double pT = .055, iT = 0, dT = 0;
 	MiniPID pidDist = new MiniPID(pT, iT, dT);
 	final double TPI = 1705;
+	
+	//Straight Driving Variables
+	final double pS = 0.03, iS = 0.0, dS = 0.0; //TODO: Calibrate
+	MiniPID pidStraight = new MiniPID(pS, iS, dS);
 	
 	// Timer
 	Timer timer = new Timer();
@@ -40,7 +44,6 @@ public class DriveTrain {
 	boolean timing = false;
 
 	// Standard Variables
-	double speed;
 	final double MAX_AUTO_SPEED = .6;
 
 	/**
@@ -59,6 +62,10 @@ public class DriveTrain {
 		navx.reset();
 		Utility.configurePID(pN, iN, dN, pidNavx);
 		pidNavx.setOutputLimits(MAX_AUTO_SPEED);
+		
+		//Configure straight PID
+		Utility.configurePID(pS, iS, dS, pidStraight);
+		pidStraight.setOutputLimits(MAX_AUTO_SPEED);
 	}
 
 	
@@ -83,19 +90,23 @@ public class DriveTrain {
 	 * @param right the power for the right motors
 	 */
 	public void drive(double left, double right) {
-		Motors.driveFrontLeft.set(ControlMode.PercentOutput, left *.5);
-		Motors.driveFrontRight.set(ControlMode.PercentOutput, right *.5);
-		Motors.driveBackLeft.set(ControlMode.PercentOutput, -left *.5);
-		Motors.driveBackRight.set(ControlMode.PercentOutput, -right *.5);
+		Motors.driveFrontLeft.set(ControlMode.PercentOutput, left);
+		Motors.driveFrontRight.set(ControlMode.PercentOutput, right);
+		Motors.driveBackLeft.set(ControlMode.PercentOutput, -left);
+		Motors.driveBackRight.set(ControlMode.PercentOutput, -right);
 	}
 	
 	/**
 	 * Drives the robot at the given power along a certain radial using the NavX
+	 * <br> Note: whichever side is getting compensated power should be opposite of the encoder </br>
 	 * @param power the power of the motors
 	 * @param angle the radial to travel along
 	 */
 	public void driveRadial(double power, double angle) {
-		//TODO: Implement
+		pidStraight.setSetpoint(angle);
+		double compensate = pidStraight.getOutput(Math.round(navx.getYaw()));
+		
+		drive(power, power*(1+compensate));
 	}
 
 	/**
@@ -139,15 +150,16 @@ public class DriveTrain {
 	
 	
 	/**
-	 * Uses PID and encoders on the drive motors to go a specified distance and hold there
+	 * Uses PID, encoders, and the NavX to travel a certain distance along a certain radial and hold there
 	 * @param dist the distance
+	 * @param radial the radial to travel on
 	 */
-	public void driveDistance(double dist) {
+	public void driveDistance(double dist, double radial) {
 		int deadzone = 1000;
 		int desTicks = (int) (TPI * dist);
 		SmartDashboard.putNumber("Desired Ticks:", desTicks);
 		pidDist.setSetpoint(desTicks);
-		int curTicks = Motors.driveEncoderRight.getSelectedSensorPosition(0);
+		int curTicks = Motors.driveEncoderLeft.getSelectedSensorPosition(0);
 		SmartDashboard.putNumber("Ticks", curTicks);
 		
 		if (Utility.inRange(curTicks, desTicks, deadzone)) { // STOPS if in deadzone of distance
@@ -157,8 +169,8 @@ public class DriveTrain {
 			driving = false;
 		}
 		else { // DRIVES until traveled far enough to be in deadzone
-			speed = pidDist.getOutput(curTicks);
-			drive(-speed);
+			double speed = pidDist.getOutput(curTicks);
+			driveRadial(-speed, radial);
 			driving = true;
 		}
 		
@@ -166,20 +178,12 @@ public class DriveTrain {
 	}
 	
 	/**
-	 * Uses PID, encoders, and the NavX to travel a certain distance along a certain radial and hold there
-	 * @param dist the distance
-	 * @param radial the radial to travel on
-	 */
-	public void driveDistanceRadial(double dist, double radial) {
-		//TODO: Implement and integrate with driveRadial()
-	}
-	
-	/**
-	 * Uses a timer to drive for a specified time forwards/backwards
+	 * Uses a timer and the NavX to travel for a certain time along a certain radial
 	 * @param time the time to drive
+	 * @param radial the radial to travel on
 	 * @param reverse if the drive train is reversed
 	 */
-	public void driveTime(double time, boolean reverse) {
+	public void driveTime(double time, double radial, boolean reverse) {
 		if (!timing) { // Start the timer and flip the TIMING flag
 			timer.start();
 			timing = true;
@@ -187,10 +191,10 @@ public class DriveTrain {
 		
 		if (timer.get() < time) { // Run the motors at MAX AUTO SPEED for the specified time and flip the DRIVING flag
 			if (reverse) {
-				drive(-MAX_AUTO_SPEED);
+				driveRadial(-MAX_AUTO_SPEED, radial);
 			}
 			else {
-				drive(MAX_AUTO_SPEED); 
+				driveRadial(MAX_AUTO_SPEED, radial); 
 			}
 			driving = true;
 		}
@@ -205,16 +209,6 @@ public class DriveTrain {
 	}
 	
 	/**
-	 * Uses a timer and the NavX to travel for a certain time along a certain radial
-	 * @param time the time to drive
-	 * @param radial the radial to travel on
-	 * @param reverse if the drive train is reversed
-	 */
-	public void driveTimeRadial(double time, double radial, boolean reverse) {
-		//TODO: Implement and integrate with driveRadial()
-	}
-	
-	/**
 	 * Uses the NavX and PID to turn to a specific angle
 	 * @param desAngle the desired angle
 	 */
@@ -223,7 +217,7 @@ public class DriveTrain {
 		int curAngle = Math.round(navx.getYaw());
 		SmartDashboard.putNumber("Current Angle:", curAngle); // Debug
 		pidNavx.setSetpoint(desAngle);
-		speed = pidNavx.getOutput(curAngle);
+		double speed = pidNavx.getOutput(curAngle);
 
 		if ((curAngle - desAngle < deadzone) && (curAngle - desAngle > -deadzone)) { //STOPS if in deadzone of angle
 			drive(0, 0); // STOPS motors
