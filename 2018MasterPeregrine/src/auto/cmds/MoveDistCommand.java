@@ -1,6 +1,6 @@
 package auto.cmds;
 
-import power.hawks.frc.lib.Command;
+import power.hawks.frc.lib.auto.cmds.Command;
 import subsys.DriveTrain;
 
 /**
@@ -15,16 +15,6 @@ public class MoveDistCommand implements Command {
 	boolean complete = false;
 	
 	/**
-	 * Moves the robot a certain distance
-	 * @param dt the drivetrain of the robot
-	 * @param t the target distance
-	 */
-	public MoveDistCommand(DriveTrain dt, double t) {
-		driveTrain = dt;
-		target = t;
-	}
-	
-	/**
 	 * Moves the robot a certain distance on a radial
 	 * @param dt the drivetrain of the robot
 	 * @param t the target distance
@@ -37,12 +27,7 @@ public class MoveDistCommand implements Command {
 	}
 	
 	public void execute() {
-		if (angle == null) {
-			driveTrain.driveDistance(target);
-		}
-		else {
-//			driveTrain.driveDistanceRadial(target, angle); //TODO: Implement
-		}
+		driveTrain.driveDistance(target, angle);
 		complete = !driveTrain.isDriving();
 	}
 

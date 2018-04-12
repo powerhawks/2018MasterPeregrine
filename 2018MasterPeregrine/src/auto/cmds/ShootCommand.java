@@ -1,6 +1,6 @@
 package auto.cmds;
 
-import power.hawks.frc.lib.Command;
+import power.hawks.frc.lib.auto.cmds.Command;
 import subsys.Shooter;
 
 /**

@@ -10,8 +10,7 @@ import auto.cmds.CylinderCommand;
 import auto.cmds.ShootCommand;
 import auto.cmds.TurnCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import power.hawks.frc.lib.Command;
-import power.hawks.frc.lib.Scheduler;
+import power.hawks.frc.lib.auto.cmds.Command;
 import subsys.DriveTrain;
 import subsys.Shooter;
 import vars.Dimensions;
@@ -71,7 +70,7 @@ public class Autonomous {
 //		commands.add(new MoveTimeCommand(driveTrain, 2, true)); //Drive 151 in FORWARDS
 		commands.add(new MoveDistCommand(driveTrain, -Dimensions.DS_TO_M_SW_DIST, 0)); // Drive FORWARD 48.0
 		commands.add(new TurnCommand(driveTrain, 90)); //Turn to 90 degrees LEFT
-		commands.add(new MoveTimeCommand(driveTrain, Dimensions.M_SW_TO_FNC_TIME, false)); //Drive for SOME sec BACKWARDS
+		commands.add(new MoveTimeCommand(driveTrain, Dimensions.M_SW_TO_FNC_TIME, 90, false)); //Drive for SOME sec BACKWARDS
 		commands.add(new ShootCommand(shooter, shooter.SWITCH_POWER, shooter.SWITCH_VELOCITY)); //Shoots into SWITCH
 	}
 	
@@ -81,7 +80,7 @@ public class Autonomous {
 	public void genAScale() {
 		commands.add(new MoveDistCommand(driveTrain, -Dimensions.DS_TO_M_SC_DIST, 0)); //Drive 290.5 in FORWARD
 		commands.add(new TurnCommand(driveTrain, 90)); //Turns 90 degrees LEFT
-		commands.add(new MoveTimeCommand(driveTrain, Dimensions.M_SC_TO_WALL_TIME_A, true)); //Drive for SOME sec FORWARDS
+		commands.add(new MoveTimeCommand(driveTrain, Dimensions.M_SC_TO_WALL_TIME_A, 90, true)); //Drive for SOME sec FORWARDS
 		commands.add(new CylinderCommand(shooter, false)); //RAISES shooter
 		commands.add(new ShootCommand(shooter, shooter.SCALE_POWER, shooter.HIGH_SCALE_VELOCITY)); //Shoots into SCALE
 	}
@@ -94,7 +93,7 @@ public class Autonomous {
 		commands.add(new TurnCommand(driveTrain, -Dimensions.M_SW_ANGLE)); //Turn to 48 degrees LEFT -- orients to SWITCH shooting position
 		commands.add(new MoveDistCommand(driveTrain, -Dimensions.M_SW_L_DIST, -Dimensions.M_SW_ANGLE)); //Drive 91.5 in FORWARD -- drives to shooting position
 		commands.add(new TurnCommand(driveTrain, 0)); //Turn LEFT 132 degrees -- orients to shooter to fence
-		commands.add(new MoveTimeCommand(driveTrain, Dimensions.M_SW_TO_FNC_TIME, false)); //Drive BACKWARDS to SWITCH fence
+		commands.add(new MoveTimeCommand(driveTrain, Dimensions.M_SW_TO_FNC_TIME, 0, false)); //Drive BACKWARDS to SWITCH fence
 //		commands.add(new MoveTimeCommand(driveTrain, 4, false));
 	}
 	
@@ -106,7 +105,7 @@ public class Autonomous {
 		commands.add(new TurnCommand(driveTrain, -Dimensions.M_SW_ANGLE)); //Turn to 48 degrees LEFT -- orients to SWITCH shooting position
 		commands.add(new MoveDistCommand(driveTrain, -Dimensions.M_SW_L_DIST, -Dimensions.M_SW_ANGLE)); //Drive 91.5 in FORWARD -- drives to shooting position
 		commands.add(new TurnCommand(driveTrain, 0)); //Turn LEFT 132 degrees -- orients to shooter to fence
-		commands.add(new MoveTimeCommand(driveTrain, Dimensions.M_SW_TO_FNC_TIME, false)); //Drive BACKWARDS to SWITCH fence
+		commands.add(new MoveTimeCommand(driveTrain, Dimensions.M_SW_TO_FNC_TIME, 0, false)); //Drive BACKWARDS to SWITCH fence
 		commands.add(new ShootCommand(shooter, shooter.SWITCH_POWER, shooter.SWITCH_VELOCITY)); //Shoots into SWITCH -- TODO: Determine if viable
 	}
 	
@@ -118,7 +117,7 @@ public class Autonomous {
 		commands.add(new TurnCommand(driveTrain, Dimensions.M_SW_ANGLE)); //Turn to 33 degrees RIGHT -- orients to SWITCH shooting position
 		commands.add(new MoveDistCommand(driveTrain, -Dimensions.M_SW_R_DIST, Dimensions.M_SW_ANGLE)); //Drive 73 in FORWARD
 		commands.add(new TurnCommand(driveTrain, 0)); //Turn RIGHT 147 degrees
-		commands.add(new MoveTimeCommand(driveTrain, Dimensions.M_SW_TO_FNC_TIME, false)); //Drive BACKWARDS to SWITCH fence
+		commands.add(new MoveTimeCommand(driveTrain, Dimensions.M_SW_TO_FNC_TIME, 0, false)); //Drive BACKWARDS to SWITCH fence
 		commands.add(new ShootCommand(shooter, shooter.SWITCH_POWER, shooter.SWITCH_VELOCITY)); //Shoots into SWITCH
 	}
 	
@@ -136,7 +135,7 @@ public class Autonomous {
 	public void genCSwitch() {
 		commands.add(new MoveDistCommand(driveTrain, -Dimensions.DS_TO_M_SW_DIST, 0)); //Drive 28.5 in FORWARDS
 		commands.add(new TurnCommand(driveTrain, -90)); //Turn to 90 degrees RIGHT
-		commands.add(new MoveTimeCommand(driveTrain, Dimensions.M_SW_TO_FNC_TIME, true)); //Drive for SOME sec BACKWARDS
+		commands.add(new MoveTimeCommand(driveTrain, Dimensions.M_SW_TO_FNC_TIME, -90, true)); //Drive for SOME sec BACKWARDS
 		commands.add(new ShootCommand(shooter, shooter.SWITCH_POWER, shooter.SWITCH_VELOCITY)); //Shoots into SWITCH
 	}
 	
@@ -146,7 +145,7 @@ public class Autonomous {
 	public void genCScale() {
 		commands.add(new MoveDistCommand(driveTrain, -Dimensions.DS_TO_M_SC_DIST, 0)); //Drive 290.5 in FORWARDS
 		commands.add(new TurnCommand(driveTrain, -90)); //Turns 90 degrees RIGHT
-		commands.add(new MoveTimeCommand(driveTrain, Dimensions.M_SC_TO_WALL_TIME_C, true)); //Drive for SOME sec backwards
+		commands.add(new MoveTimeCommand(driveTrain, Dimensions.M_SC_TO_WALL_TIME_C, -90, true)); //Drive for SOME sec backwards
 		commands.add(new CylinderCommand(shooter, false)); //RAISES shooter
 		commands.add(new ShootCommand(shooter, shooter.SCALE_POWER, shooter.HIGH_SCALE_VELOCITY)); //Shoots into SCALE
 	}
@@ -155,7 +154,7 @@ public class Autonomous {
 	 * Generates a PANIC PATH from any starting position
 	 */
 	public void genPanic() {
-		commands.add(new MoveTimeCommand(driveTrain, 3, true)); //Drive 7.5 sec FORWARDS
+		commands.add(new MoveTimeCommand(driveTrain, 3, 0, true)); //Drive 7.5 sec FORWARDS
 //		commands.add(new MoveTimeCommand(driveTrain, Dimensions.M_SW_TO_FNC_TIME, true)); //Drive BACKWARDS to SWITCH fence
 
 	}

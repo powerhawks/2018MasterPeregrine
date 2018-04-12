@@ -1,6 +1,6 @@
 package auto.cmds;
 
-import power.hawks.frc.lib.Command;
+import power.hawks.frc.lib.auto.cmds.Command;
 import subsys.DriveTrain;
 import subsys.sensors.Ultrasonic;
 import util.Utility;
@@ -62,7 +62,7 @@ public class CheckCommand implements Command {
 				return false;
 			}
 			else if (!driveTrain.isDriving()) {
-				driveTrain.driveDistance(error);
+				driveTrain.driveDistance(error, 0);
 				return false;
 			}
 			else {
@@ -71,7 +71,7 @@ public class CheckCommand implements Command {
 		}
 		else { //Y-Axis compensation
 			error = yPos - curReading;
-			driveTrain.driveDistance(error);
+			driveTrain.driveDistance(error, 90);
 			return driveTrain.isDriving();
 		}
 	}

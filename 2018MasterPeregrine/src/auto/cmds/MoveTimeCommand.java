@@ -1,6 +1,6 @@
 package auto.cmds;
 
-import power.hawks.frc.lib.Command;
+import power.hawks.frc.lib.auto.cmds.Command;
 import subsys.DriveTrain;
 
 /**
@@ -14,18 +14,6 @@ public class MoveTimeCommand implements Command {
 	Double angle;
 	boolean reverse;
 	boolean complete = false;
-	
-	/**
-	 * Moves the robot for a certain time
-	 * @param dt the drive train of the robot
-	 * @param t the time to drive for
-	 * @param r reverse the drive train
-	 */
-	public MoveTimeCommand(DriveTrain dt, double t, boolean r) {
-		driveTrain = dt;
-		target = t;
-		reverse = r;
-	}
 	
 	/**
 	 * Moves the robot for a certain time on a certain radial
@@ -43,12 +31,7 @@ public class MoveTimeCommand implements Command {
 	
 	@Override
 	public void execute() {
-		if (angle == null) {
-			driveTrain.driveTime(target, reverse); 
-		}
-		else {
-//			driveTrain.driveTimeRadial(target, angle, reverse); //TODO Implement
-		}
+		driveTrain.driveTime(target, angle, reverse);
 		complete = !driveTrain.isDriving();
 	}
 	
