@@ -3,6 +3,7 @@ package subsys.sensors;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.SerialPort;
+import subsys.PeregrineDrive;
 import vars.Motors;
 
 /**
@@ -14,6 +15,11 @@ import vars.Motors;
 @Deprecated
 public class PixyCam {
 	SerialPort Serial = new SerialPort(9600, SerialPort.Port.kUSB1);
+	PeregrineDrive driveTrain;
+	
+	public PixyCam(PeregrineDrive dt) {
+		driveTrain = dt;
+	}
 	
 	/**
 	 * Centered the robot on an object as it was detected by the PixyCam
@@ -26,24 +32,15 @@ public class PixyCam {
 				System.out.println(pixy_s); //Debug
 				Integer x = Integer.parseInt(pixy_s);
 				if (x > 180) { //Drive FORWARDS if the object is too far away
-					Motors.driveFrontRight.set(ControlMode.PercentOutput, .15);
-					Motors.driveFrontLeft.set(ControlMode.PercentOutput, .15);
-					Motors.driveBackLeft.set(ControlMode.PercentOutput, .15);
-					Motors.driveBackRight.set(ControlMode.PercentOutput, .15);
+					driveTrain.drive(.15);
 
 				} 
 				else if (x < 140) { //Drive BACKWARDS if the object is too close
-					Motors.driveFrontRight.set(ControlMode.PercentOutput, -.15);
-					Motors.driveFrontLeft.set(ControlMode.PercentOutput, -.15);
-					Motors.driveBackLeft.set(ControlMode.PercentOutput, -.15);
-					Motors.driveBackRight.set(ControlMode.PercentOutput, -.15);
+					driveTrain.drive(-.15);
 				} 
 				else if (x > 140 && x < 180) { //STOP if the object is in the right range
 					System.out.println("stop");
-					Motors.driveFrontRight.set(ControlMode.PercentOutput, 0);
-					Motors.driveFrontLeft.set(ControlMode.PercentOutput, 0);
-					Motors.driveBackLeft.set(ControlMode.PercentOutput, 0);
-					Motors.driveBackRight.set(ControlMode.PercentOutput, 0);
+					driveTrain.drive(0);
 				}
 
 			}

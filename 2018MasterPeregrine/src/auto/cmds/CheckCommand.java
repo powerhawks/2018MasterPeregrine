@@ -1,7 +1,7 @@
 package auto.cmds;
 
 import power.hawks.frc.lib.auto.cmds.Command;
-import subsys.DriveTrain;
+import power.hawks.frc.lib.subsys.DriveTrain;
 import subsys.sensors.Ultrasonic;
 import util.Utility;
 

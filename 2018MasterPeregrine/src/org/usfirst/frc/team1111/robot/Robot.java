@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import subsys.DriveTrain;
+import subsys.PeregrineDrive;
 import subsys.Shooter;
 import vars.Pneumatics;
 
@@ -24,7 +24,7 @@ import vars.Pneumatics;
 @SuppressWarnings("javadoc")
 public class Robot extends IterativeRobot {
 	// Subsystem Instantiation
-	DriveTrain driveTrain = new DriveTrain();
+	PeregrineDrive driveTrain = new PeregrineDrive();
 	Shooter shooter = new Shooter();
 	Compressor myComp = new Compressor();
 

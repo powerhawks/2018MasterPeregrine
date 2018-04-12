@@ -4,14 +4,15 @@ import java.util.ArrayList;
 
 import org.usfirst.frc.team1111.robot.Robot;
 
-import auto.cmds.MoveDistCommand;
-import auto.cmds.MoveTimeCommand;
 import auto.cmds.CylinderCommand;
 import auto.cmds.ShootCommand;
-import auto.cmds.TurnCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import power.hawks.frc.lib.auto.Scheduler;
 import power.hawks.frc.lib.auto.cmds.Command;
-import subsys.DriveTrain;
+import power.hawks.frc.lib.auto.cmds.MoveDistCommand;
+import power.hawks.frc.lib.auto.cmds.MoveTimeCommand;
+import power.hawks.frc.lib.auto.cmds.TurnCommand;
+import power.hawks.frc.lib.subsys.DriveTrain;
 import subsys.Shooter;
 import vars.Dimensions;
 

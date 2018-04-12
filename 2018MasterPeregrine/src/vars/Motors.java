@@ -1,6 +1,7 @@
 package vars;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import power.hawks.frc.lib.vars.TalonGroup;
 
 /**
  * General class for the motors of the robot. Motors that need to be reversed:
@@ -8,15 +9,20 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
  * @author Power Hawks Controls
  *
  */
-@SuppressWarnings("javadoc")
+@SuppressWarnings("javadoc") 
 public class Motors {
 	// DRIVE TRAIN motors
-	public static TalonSRX driveFrontLeft = new TalonSRX(46);
-	public static TalonSRX driveFrontRight = new TalonSRX(55);
-	public static TalonSRX driveBackLeft = new TalonSRX(47);
-	public static TalonSRX driveBackRight = new TalonSRX(39);
-	public static TalonSRX driveEncoderLeft = driveBackLeft;
-	public static TalonSRX driveEncoderRight = driveFrontRight;
+//	public static TalonSRX driveFrontLeft = new TalonSRX(46);
+//	public static TalonSRX driveFrontRight = new TalonSRX(55);
+//	public static TalonSRX driveBackLeft = new TalonSRX(47);
+//	public static TalonSRX driveBackRight = new TalonSRX(39);
+//	public static TalonSRX driveEncoderLeft = driveBackLeft;
+//	public static TalonSRX driveEncoderRight = driveFrontRight;
+	public static TalonSRX[] leftTalons = {new TalonSRX(46), new TalonSRX(47)}; //Front/Left
+	public static TalonSRX[] rightTalons = {new TalonSRX(55), new TalonSRX(39)}; //Front/Left
+	
+	public static TalonGroup driveLeft = new TalonGroup(leftTalons, 1);
+	public static TalonGroup driveRight = new TalonGroup(rightTalons, 0);
 	
 	// CLIMB motors
 	public static TalonSRX telescopeHook = new TalonSRX(62);
